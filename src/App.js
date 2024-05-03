@@ -1,10 +1,36 @@
 import {useState} from "react";
 
-export default function Board() {
-    const [squares, setSquares] = useState(Array(9).fill(null))
+export default function Game(){
     const [xIsNext, setXIsNext] = useState(true)
+    // this state will hold the an array matrix that will let us
+    // call back previous states of the game
+    const  [history, setHistory] = useState([Array(9).fill(null)])
+    // this const will be the means of displaying the present state of the game
+    const currentSquares = history[history.length - 1]
 
-    function handleClick(squareToUpdate){
+    function handlePlay(nextSquares){
+        setHistory([...history, nextSquares]);
+        setXIsNext(!xIsNext);
+    }
+
+
+    return (
+        <div className="game">
+            <div className="game-board">
+                <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
+            </div>
+            <div className="game-info">
+                <ol>{/*TODO*/}</ol>
+            </div>
+        </div>
+    );
+}
+
+function Board(xIsNext, squares, onPlay) {
+    // const [squares, setSquares] = useState(Array(9).fill(null))
+    // const [xIsNext, setXIsNext] = useState(true)
+
+    function handleClick(squareToUpdate) {
 
         // this conditional prevents another letter being placed
         // in the square if one is already present
@@ -24,8 +50,10 @@ export default function Board() {
             nextSquares[squareToUpdate] = 'O'
         }
 
-        setSquares(nextSquares);
-        setXIsNext(!xIsNext);
+        onPlay(nextSquares)
+
+        // setSquares(nextSquares);
+        // setXIsNext(!xIsNext);
     }
 
     //------------------------------------------
