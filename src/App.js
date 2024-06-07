@@ -9,6 +9,8 @@ export default function Game() {
 
     function handlePlay(nextSquares){
 
+        setHistory([...history, nextSquares]);
+        setXIsNext(!xIsNext);
     }
 
     return (
@@ -24,8 +26,10 @@ export default function Game() {
 }
 
 function Board({xIsNext, squares, onPlay}) {
-    const [squares, setSquares] = useState(Array(9).fill(null))
-    const [xIsNext, setXIsNext] = useState(true)
+
+    //these have been lifted to the game function
+    // const [squares, setSquares] = useState(Array(9).fill(null))
+    // const [xIsNext, setXIsNext] = useState(true)
 
     function handleClick(squareToUpdate){
 
@@ -47,8 +51,11 @@ function Board({xIsNext, squares, onPlay}) {
             nextSquares[squareToUpdate] = 'O'
         }
 
-        setSquares(nextSquares);
-        setXIsNext(!xIsNext);
+        onPlay(nextSquares)
+
+        // these are being replaced by the above call
+        // setSquares(nextSquares);
+        // setXIsNext(!xIsNext);
     }
 
     //------------------------------------------
