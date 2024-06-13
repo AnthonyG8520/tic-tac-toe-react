@@ -1,30 +1,30 @@
 import {useState} from "react";
 
-export default function Game(){
-    const [xIsNext, setXIsNext] = useState(true)
-    // this state will hold the an array matrix that will let us
-    // call back previous states of the game
-    const  [history, setHistory] = useState([Array(9).fill(null)])
-    // this const will be the means of displaying the present state of the game
-    const currentSquares = history[history.length - 1]
+export default function Game() {
+    const [history, setHistory] = useState([Array(9).fill(null)]);
+    const [currentMove, setCurrentMove] = useState(0);
+    const xIsNext = currentMove % 2 === 0;
+    const currentSqaures = history[currentMove];
 
     function handlePlay(nextSquares){
-        setHistory([...history, nextSquares]);
-        setXIsNext(!xIsNext);
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
     }
 
     function jumpTo(nextMove){
-
+        setCurrentMove(nextMove);
     }
 
-    const moves = history.map((squares, move) =>{
+    const moves = history.map((squares, move) => {
         let description;
-        if(move > 0){
+        if (move > 0) {
             description = 'Go to move #' + move;
-        }else{
+        } else {
             description = 'Go to game start';
         }
-        return(
+        return (
+          
             <li key={move}>
                 <button onClick={() => jumpTo(move)}>{description}</button>
             </li>
@@ -34,7 +34,7 @@ export default function Game(){
     return (
         <div className="game">
             <div className="game-board">
-                <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
+                <Board xIsNext={xIsNext} squares={currentSqaures} onPlay={handlePlay}/>
             </div>
             <div className="game-info">
                 <ol>{moves}</ol>
@@ -43,7 +43,9 @@ export default function Game(){
     );
 }
 
-function Board(xIsNext, squares, onPlay) {
+function Board({xIsNext, squares, onPlay}) {
+
+    //these have been lifted to the game function
     // const [squares, setSquares] = useState(Array(9).fill(null))
     // const [xIsNext, setXIsNext] = useState(true)
 
@@ -69,6 +71,7 @@ function Board(xIsNext, squares, onPlay) {
 
         onPlay(nextSquares)
 
+        // these are being replaced by the above call
         // setSquares(nextSquares);
         // setXIsNext(!xIsNext);
     }
