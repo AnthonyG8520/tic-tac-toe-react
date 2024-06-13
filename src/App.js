@@ -1,6 +1,5 @@
 import {useState} from "react";
 
-
 export default function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
@@ -25,6 +24,7 @@ export default function Game() {
             description = 'Go to game start';
         }
         return (
+          
             <li key={move}>
                 <button onClick={() => jumpTo(move)}>{description}</button>
             </li>
@@ -49,7 +49,7 @@ function Board({xIsNext, squares, onPlay}) {
     // const [squares, setSquares] = useState(Array(9).fill(null))
     // const [xIsNext, setXIsNext] = useState(true)
 
-    function handleClick(squareToUpdate){
+    function handleClick(squareToUpdate) {
 
         // this conditional prevents another letter being placed
         // in the square if one is already present
